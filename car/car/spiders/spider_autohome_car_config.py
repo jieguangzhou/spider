@@ -5,9 +5,6 @@ from bs4 import BeautifulSoup
 from ..items import CarConfigItem
 import re
 from pymongo import MongoClient
-import json
-
-RE_config = re.compile('(spec/\d+)')
 
 
 class AutoHomeCarSpider(Spider):
@@ -26,6 +23,7 @@ class AutoHomeCarSpider(Spider):
 
     def parse(self, response):
         bs = BeautifulSoup(response.body.decode('utf-8'), 'lxml')
+        print(bs.text)
         car_data = response.meta
         tables = bs.select('table > tbody')
         tables_cfg = {}
