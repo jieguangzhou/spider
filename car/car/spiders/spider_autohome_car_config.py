@@ -11,19 +11,25 @@ class AutoHomeCarSpider(Spider):
     name = "autohome_car_config"
 
     def start_requests(self):
-        mongo_host = settings['MONGO_HOST']
-        mongo_port = settings['MONGO_PORT']
-        mongo_db = settings['MONGO_DB']
-        clct_car = MongoClient(mongo_host, mongo_port)[mongo_db]['car']
-        for car in clct_car.find():
-            url = car['car_info_url']
-            request = SplashRequest(url, callback=self.parse)
-            request.meta.update(car)
-            yield request
+        # mongo_host = settings['MONGO_HOST']
+        # mongo_port = settings['MONGO_PORT']
+        # mongo_db = settings['MONGO_DB']
+        # clct_car = MongoClient(mongo_host, mongo_port)[mongo_db]['car']
+        # for car in clct_car.find():
+        #
+        #     url = car['car_info_url']
+        #     request = SplashRequest(url, callback=self.parse)
+        #     request.meta.update(car)
+        #     yield request
+
+
+        url = 'https://car.autohome.com.cn/config/spec/32040.html'
+        request = SplashRequest(url, callback=self.parse)
+        request.meta['id'] = '32040'
+        yield request
 
     def parse(self, response):
         bs = BeautifulSoup(response.body.decode('utf-8'), 'lxml')
-        print(bs.text)
         car_data = response.meta
         tables = bs.select('table > tbody')
         tables_cfg = {}
