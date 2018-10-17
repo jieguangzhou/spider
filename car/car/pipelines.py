@@ -19,15 +19,18 @@ class CarPipeline(object):
         self.clct_sub_brand = MongoClient(mongo_host, mongo_port)[mongo_db]['sub_brand']
         self.clct_car_train = MongoClient(mongo_host, mongo_port)[mongo_db]['car_train']
         self.clct_car = MongoClient(mongo_host, mongo_port)[mongo_db]['car']
+        self.clct_car_config = MongoClient(mongo_host, mongo_port)[mongo_db]['car_config']
         # self.clct_brand.drop()
         # self.clct_sub_brand.drop()
         # self.clct_car_train.drop()
-        self.clct_car.drop()
+        # self.clct_car.drop()
+        self.clct_car_config.drop()
         #
         # self.clct_brand.create_index('id')
         # self.clct_sub_brand.create_index('id')
         # self.clct_car_train.create_index('id')
-        self.clct_car.create_index('id')
+        # self.clct_car.create_index('id')
+        self.clct_car_config.create_index('id')
 
 
     def process_item(self, item, spider):
@@ -46,6 +49,10 @@ class CarPipeline(object):
             else:
                 warnings.warn('can not deal %s : %s'%(item.__class__.__name__, str(item)))
 
+        if spider.name == 'autohome_car_config':
+            if isinstance(item, CarConfigItem):
+                self.save_car_config(item, spider)
+
         return item
 
     def save_brand(self, item, spider):
@@ -60,3 +67,6 @@ class CarPipeline(object):
 
     def save_car(self, item, spider):
         self.clct_car.insert_one(dict(item))
+
+    def save_car_config(self, item, spider):
+        self.clct_car_config.insert_one(dict(item))

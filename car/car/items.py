@@ -46,3 +46,10 @@ class CarItem(scrapy.Item):
     pass
 
 
+class CarConfigItem(scrapy.Item):
+    # define the fields for your item here like:
+    id = scrapy.Field()
+    config = scrapy.Field()
+    pass
+
+

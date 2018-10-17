@@ -96,3 +96,6 @@ MONGO_PORT = 27017
 MONGO_DB = 'car_autohome'
 
 LOG_LEVEL = 'INFO'
+
+
+SPLASH_URL = "http://localhost:8050/"
